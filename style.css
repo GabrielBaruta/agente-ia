@@ -1,0 +1,61 @@
+/* Importando fonte minimalista */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
+
+/* Configuração Geral */
+.stApp {
+    background-color: #0e1117; /* Fundo escuro profundo */
+    font-family: 'Inter', sans-serif;
+}
+
+/* Sidebar com efeito Glassmorphism */
+[data-testid="stSidebar"] {
+    background-color: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Títulos e Textos */
+h1, h2, h3 {
+    color: #e0e0e0 !important;
+    font-weight: 600;
+}
+
+p, .stMarkdown {
+    color: #b0b3b8 !important;
+}
+
+/* Input do Chat */
+.stChatInput input {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 12px !important;
+}
+
+/* Botões */
+.stButton button {
+    background: linear-gradient(90deg, #4F46E5 0%, #7C3AED 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.stButton button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4);
+}
+
+/* Diferencial: Card do Documento Ativo */
+.doc-card {
+    background: rgba(79, 70, 229, 0.1);
+    border: 1px solid #4F46E5;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    color: #A78BFA;
+    font-size: 0.9em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
