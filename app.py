@@ -7,11 +7,19 @@ from langchain_community.vectorstores import FAISS
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.chains.question_answering import load_qa_chain
 from langchain.prompts import PromptTemplate
-from dotenv import load_dotenv
 
-# Carregar variáveis de ambiente
-load_dotenv()
-# Certifique-se de ter GOOGLE_API_KEY no seu arquivo .env
+# --- CONFIGURAÇÃO DE SEGURANÇA (Importante!) ---
+# Isso garante que a chave funcione tanto localmente quanto no Streamlit Cloud
+try:
+    # Tenta pegar dos Segredos do Streamlit (Nuvem)
+    if "GOOGLE_API_KEY" in st.secrets:
+        os.environ["GOOGLE_API_KEY"] = st.secrets["GOOGLE_API_KEY"]
+    else:
+        # Se não achar, tenta pegar do .env (Local)
+        from dotenv import load_dotenv
+        load_dotenv()
+except FileNotFoundError:
+    pass # Apenas ignora se não tiver secrets nem .env (vai dar erro depois se não tiver chave)
 
 # --- Configuração da Página ---
 st.set_page_config(
