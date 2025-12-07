@@ -75,8 +75,9 @@ def get_conversational_chain():
 
     # ATUALIZAÇÃO: Usando 'gemini-1.5-flash' que é mais moderno e estável
     # Passamos a api_key explicitamente para evitar erros de autenticação
-    model = ChatGoogleGenerativeAI(model="gemini-1.5-flash", temperature=0.3, google_api_key=api_key)
-    
+    # model = ChatGoogleGenerativeAI(model="gemini-1.5-flash", temperature=0.3, google_api_key=api_key)
+    # Mude de "gemini-1.5-flash" para "gemini-1.5-flash-latest"
+    model = ChatGoogleGenerativeAI(model="gemini-1.5-flash-latest", temperature=0.3, google_api_key=api_key)
     prompt = PromptTemplate(template=prompt_template, input_variables=["context", "question"])
     chain = load_qa_chain(model, chain_type="stuff", prompt=prompt)
     return chain
