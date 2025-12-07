@@ -67,8 +67,16 @@ def get_conversational_chain():
     Resposta:
     """
     
-    # Aqui continuamos usando o Google Gemini para GERAR a resposta (Intelgência)
-    model = ChatGoogleGenerativeAI(model="gemini-pro", temperature=0.3)
+    # Recupera a chave de segurança novamente
+    if "GOOGLE_API_KEY" in st.secrets:
+        api_key = st.secrets["GOOGLE_API_KEY"]
+    else:
+        api_key = os.getenv("GOOGLE_API_KEY")
+
+    # ATUALIZAÇÃO: Usando 'gemini-1.5-flash' que é mais moderno e estável
+    # Passamos a api_key explicitamente para evitar erros de autenticação
+    model = ChatGoogleGenerativeAI(model="gemini-1.5-flash", temperature=0.3, google_api_key=api_key)
+    
     prompt = PromptTemplate(template=prompt_template, input_variables=["context", "question"])
     chain = load_qa_chain(model, chain_type="stuff", prompt=prompt)
     return chain
