@@ -7,3 +7,5 @@ faiss-cpu
 PyPDF2
 python-dotenv
 tiktoken
+sentence-transformers
+langchain-huggingface
