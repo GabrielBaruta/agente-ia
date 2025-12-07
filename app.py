@@ -54,11 +54,16 @@ def get_embeddings_model():
     return GoogleGenerativeAIEmbeddings(model="models/embedding-001")
 
 def get_vector_store(text_chunks):
-    embeddings = get_embeddings_model()
-    vector_store = FAISS.from_texts(text_chunks, embedding=embeddings)
-    # Salvando localmente para persistência na sessão
-    vector_store.save_local("faiss_index")
+    # Recupera a chave diretamente dos secrets ou ambiente
+    if "GOOGLE_API_KEY" in st.secrets:
+        api_key = st.secrets["GOOGLE_API_KEY"]
+    else:
+        api_key = os.getenv("GOOGLE_API_KEY")
 
+    # Passa a chave explicitamente
+    embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001", google_api_key=api_key)
+    vector_store = FAISS.from_texts(text_chunks, embedding=embeddings)
+    vector_store.save_local("faiss_index")
 @st.cache_resource
 def get_conversational_chain():
     # --- INTEGRAÇÃO DO SEU AGENTE ---
@@ -83,8 +88,14 @@ def get_conversational_chain():
     return chain
 
 def user_input(user_question):
-    embeddings = get_embeddings_model()
-    # Carrega o banco vetorial (seguro contra falhas se não existir)
+    # Recupera a chave novamente
+    if "GOOGLE_API_KEY" in st.secrets:
+        api_key = st.secrets["GOOGLE_API_KEY"]
+    else:
+        api_key = os.getenv("GOOGLE_API_KEY")
+
+    embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001", google_api_key=api_key)
+    
     try:
         new_db = FAISS.load_local("faiss_index", embeddings, allow_dangerous_deserialization=True)
         docs = new_db.similarity_search(user_question)
@@ -96,7 +107,9 @@ def user_input(user_question):
             
         return response["output_text"]
     except Exception as e:
-        return "Por favor, faça o upload dos documentos primeiro para processar a base de conhecimento."
+        # Imprime o erro no console para ajudar a debugar se falhar de novo
+        print(f"Erro detalhado: {e}")
+        return "Por favor, faça o upload dos documentos primeiro."
 
 # --- Interface do Usuário (UI) ---
 
